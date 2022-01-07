@@ -2,9 +2,9 @@ import 'package:cqrs_mediator/cqrs_mediator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class Command1 extends IAyncCommand {}
+class Command1 extends IAsyncCommand {}
 
-class Command2 extends IAyncCommand {}
+class Command2 extends IAsyncCommand {}
 
 class CommandHandler1 extends IAsyncCommandHandler<Command1> {
   final ValueChanged<Command1> callback;

@@ -1,39 +1,180 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# CQRS_Mediator
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+[x] What is [CQRS](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+> As described by microsoft
+> CQRS stands for Command and Query Responsibility Segregation, a pattern that separates read and update operations for a data store. Implementing CQRS in > your application can maximize its performance, scalability, and security. The flexibility created by migrating to CQRS allows a system to better evolve > over time and prevents update commands from causing merge conflicts at the domain level.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+[x] What is [Mediator](https://en.wikipedia.org/wiki/Mediator_pattern)
 
-## Features
+> Mediator is a behavioral design pattern that lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+[x] the idea is to merge between them and make simple way to code
 
-## Getting started
+> if you are combing from .net there is library called `MediatR` this one is similar to it
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+# How to use it
 
-## Usage
+There are 2 types of commands , `ICommand` & `IQuery`
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+## ICommand
+
+###  Sync
+
+* First create your command & CommandHandler
 
 ```dart
-const like = 'sample';
+   class MyCommand extends ICommand {}
+
+   class CommandHandler extends ICommandHandler<MyCommand> {
+     @override
+     void call(MyCommand command){
+         // your code here
+     }
+    }
 ```
 
-## Additional information
+* Then use it
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```dart
+
+void main(){
+     Mediator.instance.registerCommandHandler(CommandHandler());
+}
+
+/// later in your code
+
+TextButton(
+    onPressed:(){
+        Mediator.instance.command(MyCommand());
+    }
+)
+
+````
+
+###  Async
+
+* First create your command & AsyncCommandHandler
+
+```dart
+   class MyAsyncCommand extends IAsyncCommand {}
+
+   class MyAsyncCommandHandler extends IAsyncCommandHandler<MyAsyncCommand> {
+     @override
+     void call(MyCommand command){
+         // your code here
+     }
+    }
+```
+
+* Then use it
+
+```dart
+
+void main(){
+     Mediator.instance.registerAsyncCommandHandler(MyAsyncCommandHandler());
+}
+
+/// later in your code
+
+TextButton(
+    onPressed:(){
+        Mediator.instance.commandAsync(MyAsyncCommand());
+    }
+)
+
+````
+
+[x] Note when register the same instance twice then one only be registered
+
+```dart
+  /// will called twice
+  Mediator.instance.registerCommandHandler(CommandHandler());
+  Mediator.instance.registerCommandHandler(CommandHandler());
+
+  /// will called only one time
+  var handler=CommandHandler();
+  Mediator.instance.registerCommandHandler(handler);
+  Mediator.instance.registerCommandHandler(handler);
+
+```
+
+## IQuery
+
+###  Sync
+
+* First create your Query & QueryHandler
+
+```dart
+   class MyQuery extends IQuery<String> {}
+
+   class QueryHandler extends IQueryHandler<String,MyQuery> {
+     @override
+     string call(MyQuery query){
+        return 'Your result';
+     }
+    }
+```
+
+* Then use it
+
+```dart
+
+void main(){
+     Mediator.instance.registerQueryHandler(QueryHandler());
+}
+
+/// later in your code
+
+TextButton(
+    onPressed:(){
+      /// get result from the first handler
+      var result=  Mediator.instance.query(MyQuery());
+      print(result);
+
+      /// get result from all handlers
+      var result=  Mediator.instance.queryAll(MyQuery());
+      print(result);
+    }
+)
+
+````
+
+###  Async
+
+* First create your AsyncQuery & AsyncQueryHandler
+
+```dart
+   class MyAsyncQuery extends IAsyncQuery<String> {}
+
+   class AsyncQueryHandler extends IAsyncQueryHandler<String,MyAsyncQuery> {
+     @override
+     Future<string> call(MyAsyncQuery query){
+        return 'Your result';
+     }
+    }
+```
+
+* Then use it
+
+```dart
+
+void main(){
+     Mediator.instance.registerAsyncQueryHandler(AsyncQueryHandler());
+}
+
+/// later in your code
+
+TextButton(
+    onPressed:() async{
+      /// get result from the first handler
+      var result=await  Mediator.instance.queryAsync(MyQuery());
+      print(result);
+
+      /// get result from all handlers
+      var result=await  Mediator.instance.queryAllAsync(MyQuery());
+      print(result);
+    }
+)
+
+````

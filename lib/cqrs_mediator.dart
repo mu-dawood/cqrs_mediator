@@ -6,12 +6,12 @@ part 'i_query_handler.dart';
 class Mediator {
   static Mediator? _instance;
   static Mediator get instance => _instance ??= Mediator();
-  final List<_IHandlerBase> _commands = <_IHandlerBase>[];
+  final Set<_IHandlerBase> _commands = <_IHandlerBase>{};
   void registerCommandHandler<Command extends ICommand, Handler extends ICommandHandler<Command>>(Handler handler) {
     _commands.add(handler);
   }
 
-  void registerAsyncCommandHandler<Command extends IAyncCommand, Handler extends IAsyncCommandHandler<Command>>(
+  void registerAsyncCommandHandler<Command extends IAsyncCommand, Handler extends IAsyncCommandHandler<Command>>(
       Handler handler) {
     _commands.add(handler);
   }
@@ -36,7 +36,7 @@ class Mediator {
     }
   }
 
-  Future commandAsync<Command extends IAyncCommand>(Command command) async {
+  Future commandAsync<Command extends IAsyncCommand>(Command command) async {
     var handlers = _commands.whereType<IAsyncCommandHandler<Command>>();
     if (handlers.isEmpty) {
       throw Exception("You must register command handler before calling this function");

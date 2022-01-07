@@ -30,6 +30,9 @@ void main() {
     Mediator.instance.registerCommandHandler(CommandHandler1((r) {
       result = r;
     }));
+    Mediator.instance.registerCommandHandler(CommandHandler1((r) {
+      result = r;
+    }));
 
     Mediator.instance.command(command);
 
