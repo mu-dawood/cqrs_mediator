@@ -1,6 +1,6 @@
 name: cqrs_mediator
-description: A new Flutter package project.
-version: 0.0.1
+description: Package that merge between cqrs and mediator pattern
+version: 0.0.2
 homepage: https://github.com/mo-ah-dawood/cqrs_mediator
 
 environment:
