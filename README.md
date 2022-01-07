@@ -1,5 +1,7 @@
 # CQRS_Mediator
 
+[![N|cqrs_mediator](https://img.shields.io/github/v/release/mo-ah-dawood/cqrs_mediator?style=for-the-badge)](https://github.com/mo-ah-dawood/cqrs_mediator) ![GitHub forks](https://img.shields.io/github/forks/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub Repo stars](https://img.shields.io/github/stars/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/mo-ah-dawood/cqrs_mediator?style=for-the-badge) [![N|cqrs_mediator](https://img.shields.io/pub/v/cqrs_mediator.svg?style=for-the-badge)](https://pub.dev/packages/cqrs_mediator)
+
 [x] What is [CQRS](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 
 > As described by microsoft
