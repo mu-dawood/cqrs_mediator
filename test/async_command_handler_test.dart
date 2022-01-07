@@ -1,6 +1,7 @@
 import 'package:cqrs_mediator/cqrs_mediator.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
+
+typedef ValueChanged<T> = Function(T v);
 
 class Command1 extends IAsyncCommand {}
 
@@ -58,7 +59,9 @@ void main() {
     expect(result2, command);
   });
 
-  test('When send Command2 Result must throw exception as there is no registered handlers for the command 2', () {
+  test(
+      'When send Command2 Result must throw exception as there is no registered handlers for the command 2',
+      () {
     var command = Command2();
     Command1? result;
     Mediator.instance.clearHandlers();

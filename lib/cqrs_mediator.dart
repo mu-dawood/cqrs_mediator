@@ -7,17 +7,18 @@ class Mediator {
   static Mediator? _instance;
   static Mediator get instance => _instance ??= Mediator();
   final Set<_IHandlerBase> _commands = <_IHandlerBase>{};
-  void registerCommandHandler<Command extends ICommand, Handler extends ICommandHandler<Command>>(Handler handler) {
+  void registerCommandHandler<Command extends ICommand,
+      Handler extends ICommandHandler<Command>>(Handler handler) {
     _commands.add(handler);
   }
 
-  void registerAsyncCommandHandler<Command extends IAsyncCommand, Handler extends IAsyncCommandHandler<Command>>(
-      Handler handler) {
+  void registerAsyncCommandHandler<Command extends IAsyncCommand,
+      Handler extends IAsyncCommandHandler<Command>>(Handler handler) {
     _commands.add(handler);
   }
 
-  void registerQueryHandler<TResult, Query extends IQuery<TResult>, Handler extends IQueryHandler<TResult, Query>>(
-      Handler handler) {
+  void registerQueryHandler<TResult, Query extends IQuery<TResult>,
+      Handler extends IQueryHandler<TResult, Query>>(Handler handler) {
     _commands.add(handler);
   }
 
@@ -29,7 +30,8 @@ class Mediator {
   void command<Command extends ICommand>(Command command) {
     var handlers = _commands.whereType<ICommandHandler<Command>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register command handler before calling this function");
+      throw Exception(
+          "You must register command handler before calling this function");
     }
     for (var handler in handlers) {
       handler.call(command);
@@ -39,7 +41,8 @@ class Mediator {
   Future commandAsync<Command extends IAsyncCommand>(Command command) async {
     var handlers = _commands.whereType<IAsyncCommandHandler<Command>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register command handler before calling this function");
+      throw Exception(
+          "You must register command handler before calling this function");
     }
     for (var handler in handlers) {
       await handler.call(command);
@@ -49,31 +52,39 @@ class Mediator {
   TResult query<TResult, Query extends IQuery<TResult>>(Query query) {
     var handlers = _commands.whereType<IQueryHandler<TResult, Query>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register query handler before calling this function");
+      throw Exception(
+          "You must register query handler before calling this function");
     }
     return handlers.first.call(query);
   }
 
-  Future<TResult> queryAsync<TResult, Query extends IAsyncQuery<TResult>>(Query query) async {
+  Future<TResult> queryAsync<TResult, Query extends IAsyncQuery<TResult>>(
+      Query query) async {
     var handlers = _commands.whereType<IAsyncQueryHandler<TResult, Query>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register query handler before calling this function");
+      throw Exception(
+          "You must register query handler before calling this function");
     }
     return await handlers.first.call(query);
   }
 
-  Iterable<TResult> queryAll<TResult, Query extends IQuery<TResult>>(Query query) {
+  Iterable<TResult> queryAll<TResult, Query extends IQuery<TResult>>(
+      Query query) {
     var handlers = _commands.whereType<IQueryHandler<TResult, Query>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register query handler before calling this function");
+      throw Exception(
+          "You must register query handler before calling this function");
     }
     return handlers.map((e) => e.call(query));
   }
 
-  Future<Iterable<TResult>> queryAllAsync<TResult, Query extends IAsyncQuery<TResult>>(Query query) async {
+  Future<Iterable<TResult>>
+      queryAllAsync<TResult, Query extends IAsyncQuery<TResult>>(
+          Query query) async {
     var handlers = _commands.whereType<IAsyncQueryHandler<TResult, Query>>();
     if (handlers.isEmpty) {
-      throw Exception("You must register query handler before calling this function");
+      throw Exception(
+          "You must register query handler before calling this function");
     }
     return await Future.wait(handlers.map((e) => e.call(query)));
   }

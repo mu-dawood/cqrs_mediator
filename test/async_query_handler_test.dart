@@ -1,5 +1,5 @@
 import 'package:cqrs_mediator/cqrs_mediator.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 class Query1 extends IAsyncQuery<String> {}
 
@@ -30,7 +30,9 @@ void main() {
     expect(result, "AsyncQueryHandler1 result");
   });
 
-  test('When send query result must be AsyncQueryHandler2 result as it is the first handler', () async {
+  test(
+      'When send query result must be AsyncQueryHandler2 result as it is the first handler',
+      () async {
     var query = Query1();
     Mediator.instance.clearHandlers();
     Mediator.instance.registerAsyncQueryHandler(QueryHandler2());
@@ -39,7 +41,9 @@ void main() {
     expect(result, "AsyncQueryHandler2 result");
   });
 
-  test('When send query result must contain AsyncQueryHandler1 & AsyncQueryHandler2', () async {
+  test(
+      'When send query result must contain AsyncQueryHandler1 & AsyncQueryHandler2',
+      () async {
     var query = Query1();
     Mediator.instance.clearHandlers();
     Mediator.instance.registerAsyncQueryHandler(QueryHandler2());
@@ -49,7 +53,9 @@ void main() {
     expect(result.elementAt(1), "AsyncQueryHandler1 result");
   });
 
-  test('When send query2 result must throw exception as there is no registered handlers for the query 2', () {
+  test(
+      'When send query2 result must throw exception as there is no registered handlers for the query 2',
+      () {
     var query = Query2();
     Mediator.instance.clearHandlers();
     Mediator.instance.registerAsyncQueryHandler(QueryHandler1());

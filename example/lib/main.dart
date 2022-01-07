@@ -7,6 +7,7 @@ import 'package:example/handlers/command_handler.dart';
 import 'package:example/handlers/query_handler.dart';
 import 'package:example/queries/my_async_query.dart';
 import 'package:example/queries/my_query.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -59,12 +60,19 @@ class MyHomePage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 var res = Mediator.instance.query(MyQuery("Test message"));
+                if (kDebugMode) {
+                  print(res);
+                }
               },
               child: const Text("Call command handler"),
             ),
             TextButton(
               onPressed: () {
-                var res = Mediator.instance.queryAsync(MyAsyncQuery("Test message"));
+                var res =
+                    Mediator.instance.queryAsync(MyAsyncQuery("Test message"));
+                if (kDebugMode) {
+                  print(res);
+                }
               },
               child: const Text("Call async command handler"),
             )

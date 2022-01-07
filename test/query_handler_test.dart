@@ -1,5 +1,5 @@
 import 'package:cqrs_mediator/cqrs_mediator.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 class Query1 extends IQuery<String> {}
 
@@ -30,7 +30,9 @@ void main() {
     expect(result, "QueryHandler1 result");
   });
 
-  test('When send query result must be QueryHandler2 result as it is the first handler', () {
+  test(
+      'When send query result must be QueryHandler2 result as it is the first handler',
+      () {
     var query = Query1();
     Mediator.instance.clearHandlers();
     Mediator.instance.registerQueryHandler(QueryHandler2());
@@ -49,7 +51,9 @@ void main() {
     expect(result.elementAt(1), "QueryHandler1 result");
   });
 
-  test('When send query2 result must throw exception as there is no registered handlers for the query 2', () {
+  test(
+      'When send query2 result must throw exception as there is no registered handlers for the query 2',
+      () {
     var query = Query2();
     Mediator.instance.clearHandlers();
     Mediator.instance.registerQueryHandler(QueryHandler1());
