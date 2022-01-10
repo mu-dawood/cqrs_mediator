@@ -1,4 +1,5 @@
-# CQRS_Mediator
+
+![CQRS-removebg-preview](https://user-images.githubusercontent.com/31937782/148718369-33d5526f-7d84-4d92-9dac-fb35736edea3.png)
 
 [![N|cqrs_mediator](https://img.shields.io/github/v/release/mo-ah-dawood/cqrs_mediator?style=for-the-badge)](https://github.com/mo-ah-dawood/cqrs_mediator) 
 
@@ -15,7 +16,7 @@
 
 [x] the idea is to merge between them and make simple way to code
 
-> if you are combing from .net there is library called `MediatR` this one is similar to it
+> if you are comming from .net there is library called `MediatR` this one is similar to it
 
 # How to use it
 
