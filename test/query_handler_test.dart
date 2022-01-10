@@ -23,7 +23,7 @@ void main() {
   test('When send query Result must be QueryHandler1 result', () {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerQueryHandler(QueryHandler1());
+    Mediator.instance.registerQueryHandler(() => QueryHandler1());
 
     var result = Mediator.instance.query(query);
 
@@ -35,8 +35,8 @@ void main() {
       () {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerQueryHandler(QueryHandler2());
-    Mediator.instance.registerQueryHandler(QueryHandler1());
+    Mediator.instance.registerQueryHandler(() => QueryHandler2());
+    Mediator.instance.registerQueryHandler(() => QueryHandler1());
     var result = Mediator.instance.query(query);
     expect(result, "QueryHandler2 result");
   });
@@ -44,8 +44,8 @@ void main() {
   test('When send query result must contain QueryHandler2 & QueryHandler1', () {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerQueryHandler(QueryHandler2());
-    Mediator.instance.registerQueryHandler(QueryHandler1());
+    Mediator.instance.registerQueryHandler(() => QueryHandler2());
+    Mediator.instance.registerQueryHandler(() => QueryHandler1());
     var result = Mediator.instance.queryAll(query);
     expect(result.elementAt(0), "QueryHandler2 result");
     expect(result.elementAt(1), "QueryHandler1 result");
@@ -56,7 +56,7 @@ void main() {
       () {
     var query = Query2();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerQueryHandler(QueryHandler1());
+    Mediator.instance.registerQueryHandler(() => QueryHandler1());
     String? result;
     try {
       result = Mediator.instance.query(query);

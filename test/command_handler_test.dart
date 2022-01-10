@@ -28,12 +28,12 @@ void main() {
     var command = Command1();
     Command1? result;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerCommandHandler(CommandHandler1((r) {
-      result = r;
-    }));
-    Mediator.instance.registerCommandHandler(CommandHandler1((r) {
-      result = r;
-    }));
+    Mediator.instance.registerCommandHandler(() => CommandHandler1((r) {
+          result = r;
+        }));
+    Mediator.instance.registerCommandHandler(() => CommandHandler1((r) {
+          result = r;
+        }));
 
     Mediator.instance.command(command);
 
@@ -45,12 +45,12 @@ void main() {
     Command1? result1;
     Command1? result2;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerCommandHandler(CommandHandler1((r) {
-      result1 = r;
-    }));
-    Mediator.instance.registerCommandHandler(CommandHandler2((r) {
-      result2 = r;
-    }));
+    Mediator.instance.registerCommandHandler(() => CommandHandler1((r) {
+          result1 = r;
+        }));
+    Mediator.instance.registerCommandHandler(() => CommandHandler2((r) {
+          result2 = r;
+        }));
 
     Mediator.instance.command(command);
 
@@ -64,9 +64,9 @@ void main() {
     var command = Command2();
     Command1? result;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerCommandHandler(CommandHandler1((r) {
-      result = r;
-    }));
+    Mediator.instance.registerCommandHandler(() => CommandHandler1((r) {
+          result = r;
+        }));
     try {
       Mediator.instance.command(command);
     } catch (e) {

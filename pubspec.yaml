@@ -1,6 +1,6 @@
 name: cqrs_mediator
-description: Package that merge between cqrs and mediator pattern
-version: 0.0.2
+description: Package that merge between microsoft cqrs and mediator patterns
+version: 0.0.3
 homepage: https://github.com/mo-ah-dawood/cqrs_mediator
 
 environment:

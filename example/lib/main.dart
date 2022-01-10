@@ -11,10 +11,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  Mediator.instance.registerCommandHandler(MyCommandHandler());
-  Mediator.instance.registerAsyncCommandHandler(MyAsyncCommandHandler());
-  Mediator.instance.registerQueryHandler(MyQueryHandler());
-  Mediator.instance.registerAsyncQueryHandler(MyAsyncQueryHandler());
+  Mediator.instance.registerCommandHandler(() => MyCommandHandler());
+  Mediator.instance.registerAsyncCommandHandler(() => MyAsyncCommandHandler());
+  Mediator.instance.registerQueryHandler(() => MyQueryHandler());
+  Mediator.instance.registerAsyncQueryHandler(() => MyAsyncQueryHandler());
   runApp(const MyApp());
 }
 

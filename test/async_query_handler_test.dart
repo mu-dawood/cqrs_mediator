@@ -23,7 +23,7 @@ void main() {
   test('When send query Result must be AsyncQueryHandler1 result', () async {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler1());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler1());
 
     var result = await Mediator.instance.queryAsync(query);
 
@@ -35,8 +35,8 @@ void main() {
       () async {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler2());
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler1());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler2());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler1());
     var result = await Mediator.instance.queryAsync(query);
     expect(result, "AsyncQueryHandler2 result");
   });
@@ -46,8 +46,8 @@ void main() {
       () async {
     var query = Query1();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler2());
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler1());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler2());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler1());
     var result = await Mediator.instance.queryAllAsync(query);
     expect(result.elementAt(0), "AsyncQueryHandler2 result");
     expect(result.elementAt(1), "AsyncQueryHandler1 result");
@@ -58,7 +58,7 @@ void main() {
       () {
     var query = Query2();
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(QueryHandler1());
+    Mediator.instance.registerAsyncQueryHandler(() => QueryHandler1());
 
     expectLater(Mediator.instance.queryAsync(query), throwsException);
   });

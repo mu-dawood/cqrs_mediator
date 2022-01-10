@@ -1,6 +1,8 @@
 # CQRS_Mediator
 
-[![N|cqrs_mediator](https://img.shields.io/github/v/release/mo-ah-dawood/cqrs_mediator?style=for-the-badge)](https://github.com/mo-ah-dawood/cqrs_mediator) ![GitHub forks](https://img.shields.io/github/forks/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub Repo stars](https://img.shields.io/github/stars/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/mo-ah-dawood/cqrs_mediator?style=for-the-badge) [![N|cqrs_mediator](https://img.shields.io/pub/v/cqrs_mediator.svg?style=for-the-badge)](https://pub.dev/packages/cqrs_mediator)
+[![N|cqrs_mediator](https://img.shields.io/github/v/release/mo-ah-dawood/cqrs_mediator?style=for-the-badge)](https://github.com/mo-ah-dawood/cqrs_mediator) 
+
+![GitHub forks](https://img.shields.io/github/forks/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub Repo stars](https://img.shields.io/github/stars/mo-ah-dawood/cqrs_mediator?style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/mo-ah-dawood/cqrs_mediator?style=for-the-badge) [![N|cqrs_mediator](https://img.shields.io/pub/v/cqrs_mediator.svg?style=for-the-badge)](https://pub.dev/packages/cqrs_mediator)
 
 [x] What is [CQRS](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 
@@ -41,7 +43,7 @@ There are 2 types of commands , `ICommand` & `IQuery`
 ```dart
 
 void main(){
-     Mediator.instance.registerCommandHandler(CommandHandler());
+     Mediator.instance.registerCommandHandler(()=> CommandHandler());
 }
 
 /// later in your code
@@ -74,7 +76,7 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerAsyncCommandHandler(MyAsyncCommandHandler());
+     Mediator.instance.registerAsyncCommandHandler(()=> MyAsyncCommandHandler());
 }
 
 /// later in your code
@@ -90,15 +92,9 @@ TextButton(
 [x] Note when register the same instance twice then one only be registered
 
 ```dart
-  /// will called twice
-  Mediator.instance.registerCommandHandler(CommandHandler());
-  Mediator.instance.registerCommandHandler(CommandHandler());
-
   /// will called only one time
-  var handler=CommandHandler();
-  Mediator.instance.registerCommandHandler(handler);
-  Mediator.instance.registerCommandHandler(handler);
-
+  Mediator.instance.registerCommandHandler(()=> CommandHandler());
+  Mediator.instance.registerCommandHandler(()=> CommandHandler());
 ```
 
 ## IQuery
@@ -123,7 +119,7 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerQueryHandler(QueryHandler());
+     Mediator.instance.registerQueryHandler(()=> QueryHandler());
 }
 
 /// later in your code
@@ -162,7 +158,7 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerAsyncQueryHandler(AsyncQueryHandler());
+     Mediator.instance.registerAsyncQueryHandler(()=> AsyncQueryHandler());
 }
 
 /// later in your code
