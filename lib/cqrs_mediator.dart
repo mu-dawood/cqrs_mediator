@@ -60,7 +60,7 @@ class Mediator {
         _commands.whereType<InstanceFactory<ICommandHandler<Command>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register command handler before calling this function");
+          "You must register command handler for ${command.runtimeType} before calling this function");
     }
     for (var handler in handlers) {
       handler().call(command);
@@ -75,7 +75,7 @@ class Mediator {
         _commands.whereType<InstanceFactory<IAsyncCommandHandler<Command>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register command handler before calling this function");
+          "You must register command handler for ${command.runtimeType} before calling this function");
     }
     for (var handler in handlers) {
       await handler().call(command);
@@ -90,7 +90,7 @@ class Mediator {
         _commands.whereType<InstanceFactory<IQueryHandler<TResult, Query>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register query handler before calling this function");
+          "You must register query handler for ${query.runtimeType} before calling this function");
     }
     return handlers.first.call().call(query);
   }
@@ -104,7 +104,7 @@ class Mediator {
         .whereType<InstanceFactory<IAsyncQueryHandler<TResult, Query>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register query handler before calling this function");
+          "You must register query handler for ${query.runtimeType} before calling this function");
     }
     return await handlers.first().call(query);
   }
@@ -118,7 +118,7 @@ class Mediator {
         _commands.whereType<InstanceFactory<IQueryHandler<TResult, Query>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register query handler before calling this function");
+          "You must register query handler for ${query.runtimeType} before calling this function");
     }
     return handlers.map((e) => e().call(query));
   }
@@ -133,7 +133,7 @@ class Mediator {
         .whereType<InstanceFactory<IAsyncQueryHandler<TResult, Query>>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register query handler before calling this function");
+          "You must register query handler for ${query.runtimeType} before calling this function");
     }
     return await Future.wait(handlers.map((e) => e().call(query)));
   }
