@@ -1,4 +1,3 @@
-
 ![CQRS-removebg-preview](https://user-images.githubusercontent.com/31937782/148718369-33d5526f-7d84-4d92-9dac-fb35736edea3.png)
 
 [![N|cqrs_mediator](https://img.shields.io/github/v/release/mo-ah-dawood/cqrs_mediator?style=for-the-badge)](https://github.com/mo-ah-dawood/cqrs_mediator) 
@@ -44,14 +43,14 @@ There are 2 types of commands , `ICommand` & `IQuery`
 ```dart
 
 void main(){
-     Mediator.instance.registerCommandHandler(()=> CommandHandler());
+     Mediator.instance.registerHandler(()=> CommandHandler());
 }
 
 /// later in your code
 
 TextButton(
     onPressed:(){
-        Mediator.instance.command(MyCommand());
+        Mediator.instance.run(MyCommand());
     }
 )
 
@@ -77,14 +76,14 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerAsyncCommandHandler(()=> MyAsyncCommandHandler());
+     Mediator.instance.registerHandler(()=> MyAsyncCommandHandler());
 }
 
 /// later in your code
 
 TextButton(
     onPressed:(){
-        Mediator.instance.commandAsync(MyAsyncCommand());
+        Mediator.instance.run(MyAsyncCommand());
     }
 )
 
@@ -94,8 +93,8 @@ TextButton(
 
 ```dart
   /// will called only one time
-  Mediator.instance.registerCommandHandler(()=> CommandHandler());
-  Mediator.instance.registerCommandHandler(()=> CommandHandler());
+  Mediator.instance.registerHandler(()=> CommandHandler());
+  Mediator.instance.registerHandler(()=> CommandHandler());
 ```
 
 ## IQuery
@@ -120,7 +119,7 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerQueryHandler(()=> QueryHandler());
+     Mediator.instance.registerHandler(()=> QueryHandler());
 }
 
 /// later in your code
@@ -128,11 +127,11 @@ void main(){
 TextButton(
     onPressed:(){
       /// get result from the first handler
-      var result=  Mediator.instance.query(MyQuery());
+      var result=  Mediator.instance.run(MyQuery());
       print(result);
 
       /// get result from all handlers
-      var result=  Mediator.instance.queryAll(MyQuery());
+      var result=  Mediator.instance.runAll(MyQuery());
       print(result);
     }
 )
@@ -159,7 +158,7 @@ TextButton(
 ```dart
 
 void main(){
-     Mediator.instance.registerAsyncQueryHandler(()=> AsyncQueryHandler());
+     Mediator.instance.registerHandler(()=> AsyncQueryHandler());
 }
 
 /// later in your code
@@ -167,11 +166,11 @@ void main(){
 TextButton(
     onPressed:() async{
       /// get result from the first handler
-      var result=await  Mediator.instance.queryAsync(MyQuery());
+      var result=await  Mediator.instance.run(MyQuery());
       print(result);
 
       /// get result from all handlers
-      var result=await  Mediator.instance.queryAllAsync(MyQuery());
+      var result=await Future.wait( Mediator.instance.runAll(MyQuery()));
       print(result);
     }
 )
