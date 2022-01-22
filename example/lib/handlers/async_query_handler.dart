@@ -3,7 +3,7 @@ import 'package:example/queries/my_async_query.dart';
 
 class MyAsyncQueryHandler extends IAsyncQueryHandler<String, MyAsyncQuery> {
   @override
-  Future<String> call(MyAsyncQuery query) async {
-    return "your searching for ${query.userName}";
+  Future<String> call(MyAsyncQuery command) async {
+    return "your searching for ${command.userName}";
   }
 }

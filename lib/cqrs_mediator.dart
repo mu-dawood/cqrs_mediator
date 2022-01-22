@@ -1,7 +1,8 @@
 part 'i_command.dart';
 part 'i_command_handler.dart';
-part 'i_query.dart';
-part 'i_query_handler.dart';
+
+typedef _InstanceFactoryChecker<TResult, Command extends _ICommand<TResult>>
+    = _ICommandHandler<TResult, Command> Function();
 
 typedef InstanceFactory<T extends _IHandlerBase> = T Function();
 
@@ -11,9 +12,9 @@ class Mediator {
   final Set<InstanceFactory<_IHandlerBase>> _commands =
       <InstanceFactory<_IHandlerBase>>{};
 
-  /// Register a function that return a [handler] of type [ICommandHandler] for [Command] of type [ICommand]
-  void registerCommandHandler<Command extends ICommand,
-          Handler extends ICommandHandler<Command>>(
+  /// Register a function that return a [handler] of type [ICommandHandler] for [Command] of type [_ICommand]
+  void registerHandler<TResult, Command extends _ICommand<TResult>,
+          Handler extends _ICommandHandler<TResult, Command>>(
       InstanceFactory<Handler> handler) {
     var handlers = _commands.whereType<InstanceFactory<Handler>>();
     if (handlers.isEmpty) {
@@ -21,121 +22,31 @@ class Mediator {
     }
   }
 
-  /// Register a function that return a [handler] of type [IAsyncCommandHandler] for [Command] of type [IAsyncCommand]
-  void registerAsyncCommandHandler<Command extends IAsyncCommand,
-          Handler extends IAsyncCommandHandler<Command>>(
-      InstanceFactory<Handler> handler) {
-    var handlers = _commands.whereType<InstanceFactory<Handler>>();
+  /// call the first instance of [ICommandHandler] that registered for [command]
+  ///
+  /// If there is no handlers registered an exception will be thrown
+  TResult run<TResult, Command extends _ICommand<TResult>>(Command command) {
+    var handlers =
+        _commands.whereType<_InstanceFactoryChecker<TResult, Command>>();
     if (handlers.isEmpty) {
-      _commands.add(handler);
+      throw Exception(
+          "You must register query handler for ${command.runtimeType} before calling this function");
     }
-  }
-
-  /// Register a function that return a [handler] of type [IQueryHandler] for [Query] of type [IQuery]
-  void registerQueryHandler<TResult, Query extends IQuery<TResult>,
-          Handler extends IQueryHandler<TResult, Query>>(
-      InstanceFactory<Handler> handler) {
-    var handlers = _commands.whereType<InstanceFactory<Handler>>();
-    if (handlers.isEmpty) {
-      _commands.add(handler);
-    }
-  }
-
-  /// Register a function that return a [handler] of type [IAsyncQueryHandler] for [Query] of type [IAsyncQuery]
-  void registerAsyncQueryHandler<TResult, Query extends IAsyncQuery<TResult>,
-          Handler extends IAsyncQueryHandler<TResult, Query>>(
-      InstanceFactory<Handler> handler) {
-    var handlers = _commands.whereType<InstanceFactory<Handler>>();
-    if (handlers.isEmpty) {
-      _commands.add(handler);
-    }
-    print(handlers.length);
+    return handlers.first.call().call(command);
   }
 
   /// call all instances of [ICommandHandler] that registered for [command]
   ///
   /// If there is no handlers registered an exception will be thrown
-  void command<Command extends ICommand>(Command command) {
+  List<TResult> runAll<TResult, Command extends _ICommand<TResult>>(
+      Command command) {
     var handlers =
-        _commands.whereType<InstanceFactory<ICommandHandler<Command>>>();
+        _commands.whereType<_InstanceFactoryChecker<TResult, Command>>();
     if (handlers.isEmpty) {
       throw Exception(
-          "You must register command handler for ${command.runtimeType} before calling this function");
+          "You must register query handler for ${command.runtimeType} before calling this function");
     }
-    for (var handler in handlers) {
-      handler().call(command);
-    }
-  }
-
-  /// call all instances of [IAsyncCommandHandler] that registered for [command]
-  ///
-  /// If there is no handlers registered an exception will be thrown
-  Future commandAsync<Command extends IAsyncCommand>(Command command) async {
-    var handlers =
-        _commands.whereType<InstanceFactory<IAsyncCommandHandler<Command>>>();
-    if (handlers.isEmpty) {
-      throw Exception(
-          "You must register command handler for ${command.runtimeType} before calling this function");
-    }
-    for (var handler in handlers) {
-      await handler().call(command);
-    }
-  }
-
-  /// call the first instance of [IQueryHandler] that registered for [query]
-  ///
-  /// If there is no handlers registered an exception will be thrown
-  TResult query<TResult, Query extends IQuery<TResult>>(Query query) {
-    var handlers =
-        _commands.whereType<InstanceFactory<IQueryHandler<TResult, Query>>>();
-    if (handlers.isEmpty) {
-      throw Exception(
-          "You must register query handler for ${query.runtimeType} before calling this function");
-    }
-    return handlers.first.call().call(query);
-  }
-
-  /// call the first instance of [IAsyncQueryHandler] that registered for [query]
-  ///
-  /// If there is no handlers registered an exception will be thrown
-  Future<TResult> queryAsync<TResult, Query extends IAsyncQuery<TResult>>(
-      Query query) async {
-    var handlers = _commands
-        .whereType<InstanceFactory<IAsyncQueryHandler<TResult, Query>>>();
-    if (handlers.isEmpty) {
-      throw Exception(
-          "You must register query handler for ${query.runtimeType} before calling this function");
-    }
-    return await handlers.first().call(query);
-  }
-
-  /// call all instance of [IQueryHandler] that registered for [query]
-  ///
-  /// If there is no handlers registered an exception will be thrown
-  Iterable<TResult> queryAll<TResult, Query extends IQuery<TResult>>(
-      Query query) {
-    var handlers =
-        _commands.whereType<InstanceFactory<IQueryHandler<TResult, Query>>>();
-    if (handlers.isEmpty) {
-      throw Exception(
-          "You must register query handler for ${query.runtimeType} before calling this function");
-    }
-    return handlers.map((e) => e().call(query));
-  }
-
-  /// call all instance of [IAsyncQueryHandler] that registered for [query]
-  ///
-  /// If there is no handlers registered an exception will be thrown
-  Future<Iterable<TResult>>
-      queryAllAsync<TResult, Query extends IAsyncQuery<TResult>>(
-          Query query) async {
-    var handlers = _commands
-        .whereType<InstanceFactory<IAsyncQueryHandler<TResult, Query>>>();
-    if (handlers.isEmpty) {
-      throw Exception(
-          "You must register query handler for ${query.runtimeType} before calling this function");
-    }
-    return await Future.wait(handlers.map((e) => e().call(query)));
+    return handlers.map((e) => e.call().call(command)).toList();
   }
 
   /// clear all handlers
@@ -160,4 +71,11 @@ class Mediator {
 
   /// get lenth of registered handlers
   int get length => _commands.length;
+
+  /// get the registered handlers for [Command]
+  Iterable<_InstanceFactoryChecker<TResult, Command>>
+      getHandlersFor<TResult, Command extends _ICommand<TResult>>(
+          Command command) {
+    return _commands.whereType<_InstanceFactoryChecker<TResult, Command>>();
+  }
 }

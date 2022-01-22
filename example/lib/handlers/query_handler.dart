@@ -3,7 +3,7 @@ import 'package:example/queries/my_query.dart';
 
 class MyQueryHandler extends IQueryHandler<String, MyQuery> {
   @override
-  String call(MyQuery query) {
-    return "your searching for ${query.userName}";
+  String call(MyQuery command) {
+    return "your searching for ${command.userName}";
   }
 }

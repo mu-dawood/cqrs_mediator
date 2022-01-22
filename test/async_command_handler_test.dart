@@ -32,11 +32,11 @@ void main() {
     var command = Command1();
     Command1? result;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncCommandHandler(() => CommandHandler1((r) {
+    Mediator.instance.registerHandler(() => CommandHandler1((r) {
           result = r;
         }));
 
-    await Mediator.instance.commandAsync(command);
+    await Mediator.instance.run(command);
 
     expect(result, command);
   });
@@ -46,14 +46,15 @@ void main() {
     Command1? result1;
     Command1? result2;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncCommandHandler(() => CommandHandler1((r) {
+    Mediator.instance.registerHandler(() => CommandHandler1((r) {
           result1 = r;
         }));
-    Mediator.instance.registerAsyncCommandHandler(() => CommandHandler2((r) {
+
+    Mediator.instance.registerHandler(() => CommandHandler2((r) {
           result2 = r;
         }));
 
-    await Mediator.instance.commandAsync(command);
+    await Future.wait(Mediator.instance.runAll(command));
 
     expect(result1, command);
     expect(result2, command);
@@ -65,11 +66,11 @@ void main() {
     var command = Command2();
     Command1? result;
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncCommandHandler(() => CommandHandler1((r) {
+    Mediator.instance.registerHandler(() => CommandHandler1((r) {
           result = r;
         }));
 
-    expectLater(Mediator.instance.commandAsync(command), throwsException);
+    expectLater(() async => Mediator.instance.run(command), throwsException);
     expect(result, null);
   });
 }

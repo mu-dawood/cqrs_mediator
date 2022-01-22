@@ -41,36 +41,36 @@ class AsyncQueryHandler extends IAsyncQueryHandler<String, QueryAsync> {
 void main() {
   test('When call registerCommandHandler length must be 1', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerCommandHandler(() => CommandHandler1());
+    Mediator.instance.registerHandler(() => CommandHandler1());
     var length = Mediator.instance.length;
     expect(length, 1);
   });
 
   test('When call registerAsyncCommandHandler length must be 1', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncCommandHandler(() => AsyncCommandHandler());
+    Mediator.instance.registerHandler(() => AsyncCommandHandler());
     var length = Mediator.instance.length;
     expect(length, 1);
   });
 
   test('When call registerQueryHandler length must be 1', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerQueryHandler(() => QueryHandler());
+    Mediator.instance.registerHandler(() => QueryHandler());
     var length = Mediator.instance.length;
     expect(length, 1);
   });
 
   test('When call registerAsyncQueryHandler length must be 1', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(() => AsyncQueryHandler());
+    Mediator.instance.registerHandler(() => AsyncQueryHandler());
     var length = Mediator.instance.length;
     expect(length, 1);
   });
 
   test('When call clear length must be 0', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(() => AsyncQueryHandler());
-    Mediator.instance.registerQueryHandler(() => QueryHandler());
+    Mediator.instance.registerHandler(() => AsyncQueryHandler());
+    Mediator.instance.registerHandler(() => QueryHandler());
     Mediator.instance.clearHandlers();
     var length = Mediator.instance.length;
     expect(length, 0);
@@ -78,8 +78,8 @@ void main() {
 
   test('When call removeHandlers length must be 1', () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(() => AsyncQueryHandler());
-    Mediator.instance.registerQueryHandler(() => QueryHandler());
+    Mediator.instance.registerHandler(() => AsyncQueryHandler());
+    Mediator.instance.registerHandler(() => QueryHandler());
     Mediator.instance.removeHandlers<QueryHandler>();
     var length = Mediator.instance.length;
     expect(length, 1);
@@ -91,9 +91,9 @@ void main() {
     }
 
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerAsyncQueryHandler(() => AsyncQueryHandler());
-    Mediator.instance.registerCommandHandler(() => CommandHandler1());
-    Mediator.instance.registerCommandHandler(fnToRemove);
+    Mediator.instance.registerHandler(() => AsyncQueryHandler());
+    Mediator.instance.registerHandler(() => CommandHandler1());
+    Mediator.instance.registerHandler(fnToRemove);
     var length = Mediator.instance.length;
     expect(length, 3);
     Mediator.instance.removeHandler(fnToRemove);
@@ -104,8 +104,8 @@ void main() {
   test('When call registerCommandHandler with same type length must be 1',
       () async {
     Mediator.instance.clearHandlers();
-    Mediator.instance.registerCommandHandler(() => CommandHandler1());
-    Mediator.instance.registerCommandHandler(() => CommandHandler1());
+    Mediator.instance.registerHandler(() => CommandHandler1());
+    Mediator.instance.registerHandler(() => CommandHandler1());
     var length = Mediator.instance.length;
     expect(length, 1);
   });

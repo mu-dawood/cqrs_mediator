@@ -11,10 +11,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  Mediator.instance.registerCommandHandler(() => MyCommandHandler());
-  Mediator.instance.registerAsyncCommandHandler(() => MyAsyncCommandHandler());
-  Mediator.instance.registerQueryHandler(() => MyQueryHandler());
-  Mediator.instance.registerAsyncQueryHandler(() => MyAsyncQueryHandler());
+  Mediator.instance.registerHandler(() => MyCommandHandler());
+  Mediator.instance.registerHandler(() => MyAsyncCommandHandler());
+  Mediator.instance.registerHandler(() => MyQueryHandler());
+  Mediator.instance.registerHandler(() => MyAsyncQueryHandler());
   runApp(const MyApp());
 }
 
@@ -47,19 +47,19 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             TextButton(
               onPressed: () {
-                Mediator.instance.command(MyCommand("Test message"));
+                Mediator.instance.run(MyCommand("Test message"));
               },
               child: const Text("Call command handler"),
             ),
             TextButton(
               onPressed: () {
-                Mediator.instance.commandAsync(MyAsyncCommand("Test message"));
+                Mediator.instance.run(MyAsyncCommand("Test message"));
               },
               child: const Text("Call async command handler"),
             ),
             TextButton(
               onPressed: () {
-                var res = Mediator.instance.query(MyQuery("Test message"));
+                var res = Mediator.instance.run(MyQuery("Test message"));
                 if (kDebugMode) {
                   print(res);
                 }
@@ -67,14 +67,14 @@ class MyHomePage extends StatelessWidget {
               child: const Text("Call command handler"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 var res =
-                    Mediator.instance.queryAsync(MyAsyncQuery("Test message"));
+                    await Mediator.instance.run(MyAsyncQuery("Test message"));
                 if (kDebugMode) {
                   print(res);
                 }
               },
-              child: const Text("Call async command handler"),
+              child: const Text("Call async query handler"),
             )
           ],
         ),
