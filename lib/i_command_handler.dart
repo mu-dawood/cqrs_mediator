@@ -1,11 +1,11 @@
 part of 'cqrs_mediator.dart';
 
-abstract class _IHandlerBase {}
+abstract class IBaseHandler {}
 
-/// TResult must be the same as generic of [_ICommand]
+/// TResult must be the same as generic of [IBaseCommand]
 ///
-abstract class _ICommandHandler<TResult, Command extends _ICommand<TResult>>
-    extends _IHandlerBase {
+abstract class _ICommandHandler<TResult, Command extends IBaseCommand<TResult>>
+    extends IBaseHandler {
   TResult call(Command command);
 }
 

@@ -48,7 +48,7 @@ void main() {
     Mediator.instance.clearHandlers();
     Mediator.instance.registerHandler(() => QueryHandler2());
     Mediator.instance.registerHandler(() => QueryHandler1());
-    var result = await Mediator.instance.run(query);
+    var result = await Future.wait(Mediator.instance.runAll(query));
     expect(result.elementAt(0), "AsyncQueryHandler2 result");
     expect(result.elementAt(1), "AsyncQueryHandler1 result");
   });
@@ -60,6 +60,6 @@ void main() {
     Mediator.instance.clearHandlers();
     Mediator.instance.registerHandler(() => QueryHandler1());
 
-    expectLater(Mediator.instance.run(query), throwsException);
+    expectLater(() => Mediator.instance.run(query), throwsException);
   });
 }
